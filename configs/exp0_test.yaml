@@ -1,38 +1,41 @@
-train:
-val:
-save_path:
-model : resnet152
-weights:
-batch_size: 8
-image_size: 640
+train: c:/111/detectors/RFUAV/dataset/train
+val: c:/111/detectors/RFUAV/dataset/valid
+save_path: c:/111/detectors/RFUAV/result
+model: resnet34  
+weight_path: ""
+weights: null
+batch_size: 8 
+image_size: 640  
 num_classes: 23
-class_names: [
-    'yunzhuoT12',
-    'Vbar',
-    'Tarains_Plus_FLY',
-    'RadioLinkAT9S',
-    'Phantom4ProRTK',
-    'Phantom4Pro',
-    'Phantom3',
-    'Mini3Pro',
-    'Mini2',
-    'MavicPro',
-    'Mavic3',
-    'Matrice600Pro',
-    'Matrice300',
-    'Matrice200',
-    'Matrice100',
-    'Matrice30T',
-    'Inspire2',
-    'FutabaT61Z',
-    'FutabaT14SG',
-    'FrskyX20',
-    'DJi',
-    'AVATA',
-    'Air2S'
-]
 device: 'cuda'
-num_epochs: 50
+epochs: 15  
+num_epochs: 15  
 shuffle: True
 lr: 0.0001
 optimizer: None
+
+class_names: {
+  "0": "yunzhuoT12",
+  "1": "Vbar",
+  "2": "Tarains_Plus_FLY",
+  "3": "RadioLinkAT9S",
+  "4": "Phantom4ProRTK",
+  "5": "Phantom4Pro",
+  "6": "Phantom3",
+  "7": "Mini3Pro",
+  "8": "Mini2",
+  "9": "MavicPro",
+  "10": "Mavic3",
+  "11": "Matrice600Pro",
+  "12": "Matrice300",
+  "13": "Matrice200",
+  "14": "Matrice100",
+  "15": "Matrice30T",
+  "16": "Inspire2",
+  "17": "FutabaT61Z",
+  "18": "FutabaT14SG",
+  "19": "FrskyX20",
+  "20": "DJi",
+  "21": "AVATA",
+  "22": "Air2S"
+}

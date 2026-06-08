@@ -102,7 +102,7 @@ class Basetrainer:
         self.set_up(model=model, train_path=train_path, val_path=val_path,
                     pretrained=pretrained, weight_path=weight_path)
 
-    def set_up(self, train_path, val_path, pretrained, weight_path, model='resnet18'):
+    def set_up(self, model='resnet18', train_path=None, val_path=None, pretrained=True, weight_path=""):
 
         """
         Initialize the model, dataset, and optimizer.
@@ -117,7 +117,7 @@ class Basetrainer:
 
         self.logger.log_with_color(f"Loading model: {model}")
 
-        if os.path.exists(weight_path):
+        if weight_path and os.path.exists(weight_path):
             pretrained = False
 
         if not os.path.exists(pretrained):
@@ -126,7 +126,7 @@ class Basetrainer:
 
         self.model = model_init_(model_name=model, num_class=self.num_class, pretrained=pretrained)
 
-        if os.path.exists(weight_path):
+        if weight_path and os.path.exists(weight_path):
             self.load_pretrained_weights(weight_path)
             self.logger.log_with_color(f"Loading pretrained weights from: {weight_path}")
 
@@ -253,7 +253,7 @@ class Basetrainer:
 
     def load_pretrained_weights(self, weight_path: str):
 
-        if os.path.exists(weight_path):
+        if weight_path and os.path.exists(weight_path):
             self.logger.log_with_color(f"Loading pretrained weights from: {weight_path}")
             state_dict = torch.load(weight_path, map_location=self.device)
             self.model.load_state_dict(state_dict)

@@ -1,20 +1,36 @@
-# A script to do the inference on the spectrogram image or binary raw frequency data pack using trained classify model or two-stage detector model.
-
+import os
 from utils.benchmark import Classify_Model
-from utils.TwoStagesDetector import TwoStagesDetector
 
 def main():
+    # 1. Инициализируем модель классификации ResNet34
+    # todo версия модели в конфиг
+    print("Инициализация модели ResNet34...")
+    test = Classify_Model(cfg='configs/exp0_test.yaml',
+                          weight_path='c:/111/detectors/RFUAV/result/best_model.pth')
 
-     # doing a inference on spectrogram image or binary raw frequency data pack using the trained classify model
-    source = ''
-    test = Classify_Model(cfg='',
-                          weight_path='')
-    test.inference(source=source, save_path='./res/')  # for inference test
+    # 2. Указываем путь к тестовой картинке-спектрограмме
+    # todo configurable
+    test_image_path = 'c:/111/detectors/RFUAV/dataset/valid/Spectrogram_Conversion_Type7/data131.jpg'
+    
+    # Папка, куда скрипт сохранит визуальный результат распознавания
+    # todo configurable
+    output_folder = './inference_result/'
 
-    # doing a two-stage detector inference on the binary raw frequency data pack using the trained detector and classify model
-    cfg_path = '../example/two_stage/sample.json'
-    TwoStagesDetector(cfg=cfg_path)
+    # Проверяем физическое наличие файла перед запуском
+    if not os.path.exists(test_image_path):
+        print(f"Ошибка: Файл {test_image_path} не найден!")
+        return
 
+    print(f"Начинаем автоматический инференс для файла: {os.path.basename(test_image_path)}")
+    
+    # 3. Вызываем встроенный метод авторов репозитория
+    # Он сам сделает: чтение -> preprocess -> forward -> сохранение картинки с рамкой/текстом
+    test.inference(source=test_image_path, save_path=output_folder)
+    
+    print("\n" + "="*50)
+    print("ИНФЕРЕНС УСПЕШНО ВЫПОЛНЕН!")
+    print(f"Результат распознавания сохранен в папку: {os.path.abspath(output_folder)}")
+    print("="*50 + "\n")
 
 if __name__ == '__main__':
     main()

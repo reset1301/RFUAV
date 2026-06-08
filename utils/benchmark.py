@@ -268,7 +268,8 @@ class Classify_Model(nn.Module):
         """
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype(font, font_size)
-        draw.text(position, res + f" {probability:.2f}%", fill=text_color, font=font)
+        drone_name = str(res) if res is not None else "Unknown_Drone"
+        draw.text(position, drone_name + f" {probability:.2f}%", fill=text_color, font=font)
 
         return image
 
@@ -585,20 +586,18 @@ def is_valid_file(path, total_ext):
 
 
 def get_key_from_value(d, value):
-    """
-    Gets the key from a dictionary based on the value.
+    # Если нам передали числовой индекс (например, 21), 
+    # преобразуем его в строку '21' и ищем прямо в словаре
+    str_val = str(value)
+    if str_val in d:
+        return d[str_val]
 
-    Parameters:
-    - d (dict): Dictionary.
-    - value: Value to find the key for.
-
-    Returns:
-    - key: Key corresponding to the value, or None if not found.
-    """
+    # На случай, если структура словаря перевернута
     for key, val in d.items():
-        if val == value:
-            return key
-    return None
+        if str(val) == str_val or str(key) == str_val:
+            return val
+
+    return "Unknown_Class"
 
 
 def preprocess_image_yolo(im0, imgsz, stride, detmodel):
