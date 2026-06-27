@@ -22,3 +22,4 @@ torchvision >= 0.15.2
 torchaudio >=2.0.2
 
 albumentations >= 1.4.20
+huggingface_hub >= 0.26.0

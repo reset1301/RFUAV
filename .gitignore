@@ -2,3 +2,5 @@
 .vscode/
 .gitignore
 venv/
+data/
+runs/

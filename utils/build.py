@@ -1,9 +1,17 @@
-"""build from CFG
+"""
+Загрузка и валидация YAML-конфигов обучения.
+
+`check_cfg()` проверяет пути к данным, соответствие числа классов и
+разрешает устройство через `resolve_device()` — так в конфиге можно
+указывать `cpu`, `cuda` или `mps`, а фактическое значение будет
+скорректировано, если backend недоступен.
 """
 import yaml
 import logging
 import os
 import torch
+
+from utils.device import resolve_device
 
 DefaultConfig = '../configs/config.yaml'
 Model_list = [
@@ -31,9 +39,11 @@ def check_cfg(cfg: str):
     if opt['weights'] == None or not os.path.exists(opt['weights']):
         logging.info("No pretrained weights specified, training from scratch")
         opt['pretrained'] = False
-    if opt['device'] != 'cpu' and not torch.cuda.is_available():
-        logging.info("CUDA is not available, using CPU instead")
-        opt['device'] = "cpu"
+    # Нормализуем device до валидного torch.device-строки (cpu/cuda/mps).
+    resolved = resolve_device(opt['device'])
+    if str(resolved) != str(opt['device']).strip().lower():
+        logging.info("Requested device '%s', using '%s' instead", opt['device'], resolved)
+    opt['device'] = str(resolved)
     return True
 
 
