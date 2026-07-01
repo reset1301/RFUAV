@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from torchvision import models
 import torch.optim as optim
+import timm
 import os
 import yaml
 from utils.build import build_from_cfg, check_cfg
@@ -324,6 +325,11 @@ def model_init_(model_name, num_class, pretrained=True):
         model.head = nn.Linear(model.head.in_features, num_class)
 
     # Mobilenet series model
+    elif model_name == "mobilenet_v4_medium":
+        model = timm.create_model(
+            'mobilenetv4_conv_medium.e500_r224_in1k',
+            pretrained = True,
+            num_classes = num_class)
     elif model_name == "mobilenet_v3_large":
         model = models.mobilenet_v3_large(pretrained=pretrained)
         model.classifier = nn.Sequential(
