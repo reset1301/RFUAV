@@ -1,0 +1,16 @@
+batch_size: 8
+class_names:
+  DJI AVATA2: 0
+  DJI MINI4 PRO: 1
+device: mps
+image_size: 224
+lr: 0.0001
+model: resnet18
+num_classes: 2
+num_epochs: 5
+optimizer: None
+save_path: runs/rfuav_subset_mps
+shuffle: true
+train: data/rfuav_subset/train
+val: data/rfuav_subset/valid
+weights: None
